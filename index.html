@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introsat CubeSat - Учебный конструктор спутников с 3D визуализацией">
+    <meta name="keywords" content="CubeSat, спутник, 3D, Three.js, образование">
     <title>Introsat CubeSat - Учебный конструктор</title>
     <style>
         * {
@@ -157,6 +159,11 @@
             margin-bottom: 10px;
         }
         
+        .feature p {
+            color: #666;
+            font-size: 14px;
+        }
+        
         footer {
             background: #333;
             color: white;
@@ -165,9 +172,26 @@
             margin-top: 60px;
         }
         
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
         .demo-button {
             text-align: center;
             margin: 40px 0;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
         }
         
         @media (max-width: 768px) {
@@ -182,6 +206,11 @@
             
             .section h2 {
                 font-size: 28px;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
@@ -203,27 +232,29 @@
 
     <section class="hero">
         <div class="container">
-            <h2>Учебный конструктор спутников CubeSat</h2>
+            <h2>🛰️ Учебный конструктор спутников CubeSat</h2>
             <p>Изучай космические технологии с интерактивной 3D-визуализацией</p>
-            <a href="#demo" class="btn">Запустить демо</a>
+            <a href="visualizer.html" class="btn" style="font-size: 18px; padding: 20px 50px;">
+                🚀 Запустить 3D Демонстратор
+            </a>
         </div>
     </section>
 
     <section id="about" class="section">
         <div class="container">
-            <h2>О проекте</h2>
+            <h2>📚 О проекте</h2>
             <div class="cards">
                 <div class="card">
                     <h3>🎓 Образовательный</h3>
-                    <p>Полный курс от основ электроники до создания собственного спутника. Пошаговые уроки с примерами кода.</p>
+                    <p>Полный курс от основ электроники до создания собственного спутника. Пошаговые уроки с примерами кода на Arduino IDE.</p>
                 </div>
                 <div class="card">
                     <h3>🔧 Практический</h3>
-                    <p>Работай с реальными компонентами: микроконтроллеры, датчики, радиомодули. Собери функциональный спутник.</p>
+                    <p>Работай с реальными компонентами: STM32 BluePill, датчики IMU, камера OV7670, радиомодуль 433 МГц. Собери функциональный спутник!</p>
                 </div>
                 <div class="card">
                     <h3>🚀 Инновационный</h3>
-                    <p>Интерактивная 3D-визуализация, симуляторы, виртуальные миссии. Обучение через игру!</p>
+                    <p>Интерактивная 3D-визуализация, симуляторы, виртуальные миссии. Обучение через игру и практику!</p>
                 </div>
             </div>
         </div>
@@ -231,31 +262,31 @@
 
     <section id="components" class="section" style="background: #f8f9fa;">
         <div class="container">
-            <h2>Компоненты набора</h2>
+            <h2>⚙️ Компоненты набора</h2>
             <div class="features">
                 <div class="feature">
                     <h4>📱 STM32 BluePill</h4>
-                    <p>Мощный микроконтроллер ARM Cortex-M3 на 72 МГц с 20 КБ ОЗУ</p>
+                    <p>ARM Cortex-M3 на 72 МГц, 20 КБ ОЗУ, 64 КБ Flash. Поддержка UART, SPI, I²C</p>
                 </div>
                 <div class="feature">
                     <h4>📷 Камера OV7670</h4>
-                    <p>Разрешение 640×480, угол обзора 60°, интерфейс I²C</p>
+                    <p>Разрешение 640×480, угол обзора 60°, интерфейс SCCB (I²C)</p>
                 </div>
                 <div class="feature">
                     <h4>🔄 IMU Датчик</h4>
-                    <p>Гироскоп, акселерометр, магнитометр в одном модуле</p>
+                    <p>Гироскоп (±250°/с), акселерометр (±8g), магнитометр (±4800 мГс)</p>
                 </div>
                 <div class="feature">
                     <h4>📡 Радиомодуль</h4>
-                    <p>Приём/передача на 433 МГц, дальность ~1 км</p>
+                    <p>Приём/передача на 433 МГц, мощность 20 дБм, дальность ~1 км</p>
                 </div>
                 <div class="feature">
                     <h4>⚙️ Маховик</h4>
-                    <p>Система ориентации спутника с магнитными катушками</p>
+                    <p>Система ориентации спутника с магнитными катушками для 3-осевой стабилизации</p>
                 </div>
                 <div class="feature">
                     <h4>💡 Датчик света</h4>
-                    <p>Фоторезистор для определения ориентации по Солнцу</p>
+                    <p>Фоторезистор для определения ориентации по Солнцу и управления энергией</p>
                 </div>
             </div>
         </div>
@@ -263,20 +294,21 @@
 
     <section id="demo" class="section">
         <div class="container">
-            <h2>3D Интерактивная демонстрация</h2>
+            <h2>🎮 3D Интерактивная демонстрация</h2>
             <div class="demo-button">
                 <a href="visualizer.html" class="btn" style="font-size: 18px; padding: 20px 50px;">
                     🚀 Открыть 3D Визуализатор
                 </a>
             </div>
-            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
-                <h3 style="color: #667eea; margin-bottom: 15px;">Что ты сможешь сделать:</h3>
-                <ul style="list-style: none; font-size: 16px; line-height: 2;">
+            <div class="highlight">
+                <h3 style="color: #667eea; margin-bottom: 15px;">✨ Что ты сможешь сделать:</h3>
+                <ul style="list-style: none; font-size: 16px; line-height: 2; color: #666;">
                     <li>✅ Рассмотреть каждый компонент в 3D</li>
-                    <li>✅ Вращать модели сенсорным управлением</li>
-                    <li>✅ Запустить анимацию</li>
-                    <li>✅ Получить информацию о характеристиках</li>
-                    <li>✅ Посмотреть, как всё собирается вместе</li>
+                    <li>✅ Вращать модели сенсорным управлением (свайп мышью/пальцем)</li>
+                    <li>✅ Запустить анимацию вращения</li>
+                    <li>✅ Получить информацию о характеристиках каждого компонента</li>
+                    <li>✅ Посмотреть, как всё собирается вместе в спутник</li>
+                    <li>✅ Использовать на смартфоне (полностью адаптировано)</li>
                 </ul>
             </div>
         </div>
@@ -284,14 +316,27 @@
 
     <section id="contact" class="section" style="background: #f8f9fa;">
         <div class="container">
-            <h2>Начни обучение</h2>
+            <h2>🎯 Начни обучение прямо сейчас</h2>
             <div style="text-align: center; max-width: 600px; margin: 0 auto;">
                 <p style="font-size: 18px; margin-bottom: 30px; color: #666;">
                     Готов изучать космические технологии? Выбери свой путь:
                 </p>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <a href="#" class="btn" style="background: #667eea;">📚 Учебное пособие</a>
-                    <a href="visualizer.html" class="btn" style="background: #764ba2;">🎮 Интерактивное демо</a>
+                    <a href="#" class="btn" style="background: #667eea; text-decoration: none;">
+                        📚 Учебное пособие
+                    </a>
+                    <a href="visualizer.html" class="btn" style="background: #764ba2; text-decoration: none;">
+                        🎮 3D Демонстратор
+                    </a>
+                </div>
+                <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px; border: 2px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">📖 Как начать?</h3>
+                    <p style="color: #666; margin-bottom: 15px;">
+                        1. Откройте 3D Демонстратор, чтобы познакомиться с компонентами<br>
+                        2. Изучите характеристики каждого модуля<br>
+                        3. Следуйте пошаговым урокам<br>
+                        4. Создавайте собственные проекты!
+                    </p>
                 </div>
             </div>
         </div>
@@ -301,11 +346,12 @@
         <div class="container">
             <p>&copy; 2024 Introsat CubeSat Project | Учебный конструктор спутников</p>
             <p style="margin-top: 10px; opacity: 0.8;">
-                Создано для образовательных целей | 
-                <a href="#" style="color: #667eea;">GitHub</a> | 
-                <a href="#" style="color: #667eea;">Контакты</a>
+                <a href="https://github.com" target="_blank">GitHub</a> | 
+                <a href="#" target="_blank">Документация</a> | 
+                <a href="#" target="_blank">Контакты</a>
             </p>
         </div>
     </footer>
 </body>
 </html>
+7 минут назад
