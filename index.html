@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introsat CubeSat - Учебный конструктор</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        nav h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        nav a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .section {
+            padding: 60px 20px;
+        }
+        
+        .section h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #667eea;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .card p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .feature h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+        
+        .demo-button {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 15px;
+                font-size: 14px;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .section h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <h1>🛰️ Introsat CubeSat</h1>
+                <ul>
+                    <li><a href="#about">О проекте</a></li>
+                    <li><a href="#components">Компоненты</a></li>
+                    <li><a href="#demo">3D Демо</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Учебный конструктор спутников CubeSat</h2>
+            <p>Изучай космические технологии с интерактивной 3D-визуализацией</p>
+            <a href="#demo" class="btn">Запустить демо</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>О проекте</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>🎓 Образовательный</h3>
+                    <p>Полный курс от основ электроники до создания собственного спутника. Пошаговые уроки с примерами кода.</p>
+                </div>
+                <div class="card">
+                    <h3>🔧 Практический</h3>
+                    <p>Работай с реальными компонентами: микроконтроллеры, датчики, радиомодули. Собери функциональный спутник.</p>
+                </div>
+                <div class="card">
+                    <h3>🚀 Инновационный</h3>
+                    <p>Интерактивная 3D-визуализация, симуляторы, виртуальные миссии. Обучение через игру!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="components" class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <h2>Компоненты набора</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>📱 STM32 BluePill</h4>
+                    <p>Мощный микроконтроллер ARM Cortex-M3 на 72 МГц с 20 КБ ОЗУ</p>
+                </div>
+                <div class="feature">
+                    <h4>📷 Камера OV7670</h4>
+                    <p>Разрешение 640×480, угол обзора 60°, интерфейс I²C</p>
+                </div>
+                <div class="feature">
+                    <h4>🔄 IMU Датчик</h4>
+                    <p>Гироскоп, акселерометр, магнитометр в одном модуле</p>
+                </div>
+                <div class="feature">
+                    <h4>📡 Радиомодуль</h4>
+                    <p>Приём/передача на 433 МГц, дальность ~1 км</p>
+                </div>
+                <div class="feature">
+                    <h4>⚙️ Маховик</h4>
+                    <p>Система ориентации спутника с магнитными катушками</p>
+                </div>
+                <div class="feature">
+                    <h4>💡 Датчик света</h4>
+                    <p>Фоторезистор для определения ориентации по Солнцу</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="section">
+        <div class="container">
+            <h2>3D Интерактивная демонстрация</h2>
+            <div class="demo-button">
+                <a href="visualizer.html" class="btn" style="font-size: 18px; padding: 20px 50px;">
+                    🚀 Открыть 3D Визуализатор
+                </a>
+            </div>
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 30px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Что ты сможешь сделать:</h3>
+                <ul style="list-style: none; font-size: 16px; line-height: 2;">
+                    <li>✅ Рассмотреть каждый компонент в 3D</li>
+                    <li>✅ Вращать модели сенсорным управлением</li>
+                    <li>✅ Запустить анимацию</li>
+                    <li>✅ Получить информацию о характеристиках</li>
+                    <li>✅ Посмотреть, как всё собирается вместе</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <h2>Начни обучение</h2>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p style="font-size: 18px; margin-bottom: 30px; color: #666;">
+                    Готов изучать космические технологии? Выбери свой путь:
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <a href="#" class="btn" style="background: #667eea;">📚 Учебное пособие</a>
+                    <a href="visualizer.html" class="btn" style="background: #764ba2;">🎮 Интерактивное демо</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Introsat CubeSat Project | Учебный конструктор спутников</p>
+            <p style="margin-top: 10px; opacity: 0.8;">
+                Создано для образовательных целей | 
+                <a href="#" style="color: #667eea;">GitHub</a> | 
+                <a href="#" style="color: #667eea;">Контакты</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
