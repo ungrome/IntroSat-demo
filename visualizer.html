@@ -17,17 +17,20 @@
             -webkit-touch-callout: none;
             -webkit-user-select: none;
         }
+        
         html, body { 
             width: 100%; 
             height: 100%;
             overflow: hidden;
-        }
-        body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body { 
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             display: flex;
             flex-direction: column;
         }
+        
         h1 {
             text-align: center;
             color: white;
@@ -35,67 +38,101 @@
             background: rgba(0, 0, 0, 0.6);
             font-size: 18px;
             margin: 0;
+            flex-shrink: 0;
+            z-index: 10;
         }
+        
         #canvas { 
             display: block; 
             flex: 1;
             width: 100%;
+            min-height: 400px;
         }
+        
         .controls {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             color: white;
-            padding: 10px;
+            padding: 12px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             gap: 8px;
+            flex-shrink: 0;
+            z-index: 20;
+            max-height: 150px;
             overflow-y: auto;
-            max-height: 140px;
         }
+        
         button {
             padding: 12px 10px;
             background: #00d4ff;
-            border: none;
+            color: #000;
+            border: 2px solid #00a8cc;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             font-size: 12px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             touch-action: manipulation;
+            white-space: nowrap;
+            min-height: 44px;
         }
+        
+        button:hover { 
+            background: #00a8cc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 212, 255, 0.4);
+        }
+        
         button:active { 
-            background: #00a8cc; 
+            background: #0088aa;
             transform: scale(0.95);
         }
+        
         button.active { 
-            background: #ff6b6b; 
+            background: #ff6b6b;
+            border-color: #ff5252;
+            color: white;
         }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
         .info {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             color: #00ff00;
-            padding: 10px;
+            padding: 12px;
             font-family: 'Courier New', monospace;
-            font-size: 11px;
-            line-height: 1.4;
-            max-height: 100px;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 120px;
             overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 20;
+            border-top: 1px solid rgba(0, 255, 0, 0.3);
         }
+        
         .loading {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: #00ff00;
-            padding: 30px;
+            padding: 30px 40px;
             border-radius: 10px;
             text-align: center;
             font-family: 'Courier New', monospace;
             z-index: 1000;
             display: none;
+            border: 2px solid #00ff00;
         }
+        
         .loading.show {
             display: block;
         }
+        
         .spinner {
             border: 4px solid rgba(0, 255, 0, 0.3);
             border-top: 4px solid #00ff00;
@@ -105,17 +142,40 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 15px;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
         @media (max-width: 600px) {
-            .controls {
-                grid-template-columns: repeat(2, 1fr);
+            h1 {
+                font-size: 16px;
+                padding: 8px;
             }
+            
+            .controls {
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                gap: 6px;
+                padding: 8px;
+            }
+            
             button {
                 font-size: 11px;
                 padding: 10px 8px;
+                min-height: 40px;
+            }
+            
+            .info {
+                font-size: 11px;
+                padding: 8px;
+                max-height: 100px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .controls {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -123,30 +183,37 @@
 <body>
     <h1>🛰️ Introsat CubeSat 3D Visualizer</h1>
     <canvas id="canvas"></canvas>
-    <div class="controls">
-        <button onclick="showComponent('bluepill')">BluePill</button>
-        <button onclick="showComponent('cubesat')">CubeSat</button>
-        <button onclick="showComponent('gyro')">Гироскоп</button>
-        <button onclick="showComponent('camera')">Камера</button>
-        <button onclick="showComponent('radio')">Радио</button>
-        <button onclick="showComponent('model')">📦 3D Модель</button>
-        <button onclick="toggleAnimation()">Анимация</button>
-        <button onclick="resetView()">Сброс</button>
+    
+    <div class="controls" id="controls">
+        <button onclick="showComponent('bluepill')">📱 BluePill</button>
+        <button onclick="showComponent('cubesat')">🛰️ CubeSat</button>
+        <button onclick="showComponent('gyro')">🔄 Гироскоп</button>
+        <button onclick="showComponent('camera')">📷 Камера</button>
+        <button onclick="showComponent('radio')">📡 Радио</button>
+        <button onclick="showComponent('model')">📦 Модель</button>
+        <button onclick="toggleAnimation()" id="animBtn">▶ Анимация</button>
+        <button onclick="resetView()">🔄 Сброс</button>
     </div>
+    
     <div class="info" id="info">
-        Выберите компонент...
+        ✓ Выберите компонент для просмотра...
     </div>
+    
     <div class="loading" id="loading">
         <div class="spinner"></div>
         <p>Загрузка 3D модели...</p>
+        <p style="font-size: 11px; margin-top: 10px; opacity: 0.7;">Пожалуйста, подождите</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@r128/examples/js/loaders/GLTFLoader.js"></script>
+    
     <script>
+        // Инициализация Three.js
         const canvas = document.getElementById('canvas');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x1a1a2e);
+        scene.fog = new THREE.Fog(0x1a1a2e, 100, 1000);
 
         const camera = new THREE.PerspectiveCamera(
             75, 
@@ -162,7 +229,7 @@
             alpha: true
         });
         renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.shadowMap.enabled = true;
 
         // Освещение
@@ -172,12 +239,15 @@
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight.position.set(5, 10, 7);
         directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
         scene.add(directionalLight);
 
         const pointLight = new THREE.PointLight(0x00d4ff, 0.5);
         pointLight.position.set(-5, 5, 5);
         scene.add(pointLight);
 
+        // Переменные состояния
         let currentComponent = null;
         let isAnimating = false;
         let touchStartX = 0;
@@ -186,12 +256,16 @@
 
         // Сенсорное управление
         canvas.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        });
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, false);
 
         canvas.addEventListener('touchmove', (e) => {
-            if (!currentComponent) return;
+            if (!currentComponent || e.touches.length !== 1) return;
+            
+            e.preventDefault();
             
             const deltaX = e.touches[0].clientX - touchStartX;
             const deltaY = e.touches[0].clientY - touchStartY;
@@ -201,53 +275,72 @@
             
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-        });
+        }, false);
 
         // Загрузка 3D модели
         function loadModel() {
             return new Promise((resolve, reject) => {
                 const loader = new THREE.GLTFLoader();
                 
-                // Путь к модели на GitHub Pages
-                const modelPath = 'models/cubesat.glb';
+                // Попробуй разные пути
+                const paths = [
+                    'models/cubesat.glb',
+                    './models/cubesat.glb',
+                    '/introsat-demo/models/cubesat.glb'
+                ];
                 
-                loader.load(
-                    modelPath,
-                    (gltf) => {
-                        const model = gltf.scene;
-                        
-                        // Масштабирование и позиционирование
-                        model.scale.set(1, 1, 1);
-                        model.position.set(0, 0, 0);
-                        
-                        // Включи тени для всех объектов
-                        model.traverse((child) => {
-                            if (child.isMesh) {
-                                child.castShadow = true;
-                                child.receiveShadow = true;
-                            }
-                        });
-                        
-                        loadedModel = model;
-                        resolve(model);
-                    },
-                    (progress) => {
-                        const percentComplete = (progress.loaded / progress.total * 100);
-                        console.log(percentComplete + '% loaded');
-                    },
-                    (error) => {
-                        console.error('Ошибка загрузки модели:', error);
-                        document.getElementById('info').textContent = 
-                            '❌ Ошибка загрузки модели\nПроверь путь: models/cubesat.glb';
-                        reject(error);
+                let lastError = null;
+                
+                function tryLoad(pathIndex) {
+                    if (pathIndex >= paths.length) {
+                        reject(new Error('Модель не найдена. Проверь путь: models/cubesat.glb'));
+                        return;
                     }
-                );
+                    
+                    const path = paths[pathIndex];
+                    console.log('Попытка загрузить:', path);
+                    
+                    loader.load(
+                        path,
+                        (gltf) => {
+                            console.log('Модель загружена:', path);
+                            const model = gltf.scene;
+                            
+                            // Масштабирование и позиционирование
+                            model.scale.set(1, 1, 1);
+                            model.position.set(0, 0, 0);
+                            
+                            // Включи тени для всех объектов
+                            model.traverse((child) => {
+                                if (child.isMesh) {
+                                    child.castShadow = true;
+                                    child.receiveShadow = true;
+                                }
+                            });
+                            
+                            loadedModel = model;
+                            resolve(model);
+                        },
+                        (progress) => {
+                            const percentComplete = Math.round((progress.loaded / progress.total) * 100);
+                            console.log(percentComplete + '% loaded');
+                        },
+                        (error) => {
+                            console.log('Ошибка загрузки ' + path + ':', error);
+                            lastError = error;
+                            tryLoad(pathIndex + 1);
+                        }
+                    );
+                }
+                
+                tryLoad(0);
             });
         }
 
         // Создание компонентов
         function createBluePill() {
             const group = new THREE.Group();
+            
             const boardGeometry = new THREE.BoxGeometry(3, 1.5, 0.1);
             const boardMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x1a1a3e,
@@ -281,6 +374,7 @@
 
         function createCubeSat() {
             const group = new THREE.Group();
+            
             const bodyGeometry = new THREE.BoxGeometry(1, 1, 1);
             const bodyMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x2a2a4a,
@@ -297,7 +391,8 @@
                 emissiveIntensity: 0.2
             });
 
-            [[0.6, 0, 0], [-0.6, 0, 0], [0, 0.6, 0], [0, -0.6, 0]].forEach(pos => {
+            const positions = [[0.6, 0, 0], [-0.6, 0, 0], [0, 0.6, 0], [0, -0.6, 0]];
+            positions.forEach(pos => {
                 const panel = new THREE.Mesh(panelGeometry, panelMaterial);
                 panel.position.set(...pos);
                 panel.castShadow = true;
@@ -309,40 +404,95 @@
 
         function createGyro() {
             const group = new THREE.Group();
+            
             const caseGeometry = new THREE.BoxGeometry(0.6, 0.6, 0.6);
             const caseMaterial = new THREE.MeshStandardMaterial({ color: 0x2a2a4a });
             const caseBox = new THREE.Mesh(caseGeometry, caseMaterial);
             caseBox.castShadow = true;
             group.add(caseBox);
+            
+            const axes = [
+                { color: 0xff0000 },
+                { color: 0x00ff00 },
+                { color: 0x0000ff }
+            ];
+
+            axes.forEach((axis, i) => {
+                const axisGeometry = new THREE.CylinderGeometry(0.05, 0.05, 1.5, 8);
+                const axisMaterial = new THREE.MeshStandardMaterial({ color: axis.color });
+                const axisLine = new THREE.Mesh(axisGeometry, axisMaterial);
+                
+                if (i === 0) axisLine.rotation.z = Math.PI / 2;
+                if (i === 2) axisLine.rotation.x = Math.PI / 2;
+                
+                axisLine.castShadow = true;
+                group.add(axisLine);
+            });
+            
             return group;
         }
 
         function createCamera() {
             const group = new THREE.Group();
+            
             const lensGeometry = new THREE.SphereGeometry(0.3, 32, 32);
             const lensMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x4488ff,
+                metalness: 0.5,
                 emissive: 0x0066ff,
                 emissiveIntensity: 0.3
             });
             const lens = new THREE.Mesh(lensGeometry, lensMaterial);
             lens.castShadow = true;
             group.add(lens);
+
+            const bodyGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.5, 32);
+            const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0x1a1a3e });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            body.position.z = -0.3;
+            body.castShadow = true;
+            group.add(body);
+
             return group;
         }
 
         function createRadio() {
             const group = new THREE.Group();
+            
             const boardGeometry = new THREE.BoxGeometry(1, 0.6, 0.1);
             const boardMaterial = new THREE.MeshStandardMaterial({ color: 0x2a4a2a });
             const board = new THREE.Mesh(boardGeometry, boardMaterial);
             board.castShadow = true;
             group.add(board);
+
+            const chipGeometry = new THREE.BoxGeometry(0.5, 0.4, 0.1);
+            const chipMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
+            const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+            chip.position.z = 0.1;
+            chip.castShadow = true;
+            group.add(chip);
+
+            const antennaGeometry = new THREE.CylinderGeometry(0.04, 0.04, 1, 8);
+            const antennaMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xff6b6b,
+                emissive: 0xff3333,
+                emissiveIntensity: 0.5
+            });
+            const antenna = new THREE.Mesh(antennaGeometry, antennaMaterial);
+            antenna.position.set(0.4, 0.4, 0.2);
+            antenna.rotation.z = Math.PI / 6;
+            antenna.castShadow = true;
+            group.add(antenna);
+
             return group;
         }
 
+        // Главная функция отображения компонента
         async function showComponent(componentName) {
-            if (currentComponent) scene.remove(currentComponent);
+            if (currentComponent) {
+                scene.remove(currentComponent);
+                currentComponent = null;
+            }
 
             let newComponent;
             let info = '';
@@ -351,27 +501,47 @@
                 bluepill: { 
                     create: createBluePill, 
                     z: 4,
-                    info: '📱 STM32F103C8T6\n72 МГц, 20 КБ ОЗУ\n64 КБ Flash'
+                    info: '📱 STM32F103C8T6 BluePill\n' +
+                          '• Микроконтроллер: ARM Cortex-M3\n' +
+                          '• Частота: 72 МГц\n' +
+                          '• ОЗУ: 20 КБ | Flash: 64 КБ\n' +
+                          '• GPIO: 20 пинов'
                 },
                 cubesat: { 
                     create: createCubeSat, 
                     z: 3,
-                    info: '🛰️ CubeSat 1U\n10×10×10 см\nСолнечные панели'
+                    info: '🛰️ CubeSat 1U\n' +
+                          '• Размер: 10×10×10 см\n' +
+                          '• Масса: ~1.3 кг\n' +
+                          '• Солнечные панели: 4 шт\n' +
+                          '• Антенна: UHF 433 МГц'
                 },
                 gyro: { 
                     create: createGyro, 
                     z: 3,
-                    info: '🔄 IMU Датчик\n±250°/с (гироскоп)\n±8g (акселерометр)'
+                    info: '🔄 IMU Датчик\n' +
+                          '• Гироскоп: ±250°/с\n' +
+                          '• Акселерометр: ±8g\n' +
+                          '• Магнитометр: ±4800 мГс\n' +
+                          '• Интерфейс: I²C'
                 },
                 camera: { 
                     create: createCamera, 
                     z: 2.5,
-                    info: '📷 OV7670\n640×480\n60° угол обзора'
+                    info: '📷 Камера OV7670\n' +
+                          '• Разрешение: 640×480\n' +
+                          '• Угол обзора: 60°\n' +
+                          '• Интерфейс: SCCB (I²C)\n' +
+                          '• Потребление: 60 мА'
                 },
                 radio: { 
                     create: createRadio, 
                     z: 2,
-                    info: '📡 Радиомодуль\n433 МГц\n~1 км дальность'
+                    info: '📡 Радиомодуль\n' +
+                          '• Частота: 433 МГц\n' +
+                          '• Мощность: 20 дБм\n' +
+                          '• Дальность: ~1 км\n' +
+                          '• Интерфейс: SPI'
                 },
                 model: {
                     create: null,
@@ -385,15 +555,15 @@
                 const comp = components[componentName];
                 
                 if (comp.isModel) {
-                    // Загрузи 3D модель
                     document.getElementById('loading').classList.add('show');
                     try {
                         newComponent = await loadModel();
                         document.getElementById('loading').classList.remove('show');
-                        info = '📦 3D Модель CubeSat\nЗагружена успешно!\nСвайпай для вращения';
+                        info = '📦 3D Модель CubeSat\n✓ Загружена успешно!\nСвайпай для вращения';
                     } catch (error) {
                         document.getElementById('loading').classList.remove('show');
-                        info = '❌ Ошибка загрузки\nПроверь models/cubesat.glb';
+                        console.error('Ошибка:', error);
+                        info = '❌ Ошибка загрузки модели\n' + error.message;
                         return;
                     }
                 } else {
@@ -407,19 +577,26 @@
             if (newComponent) {
                 scene.add(newComponent);
                 currentComponent = newComponent;
-                document.getElementById('info').textContent = info;
             }
+            
+            document.getElementById('info').textContent = info;
         }
 
+        // Управление анимацией
         function toggleAnimation() {
             isAnimating = !isAnimating;
-            event.target.textContent = isAnimating ? '⏸ Стоп' : '▶ Анимация';
+            const btn = document.getElementById('animBtn');
+            btn.textContent = isAnimating ? '⏸ Стоп' : '▶ Анимация';
+            btn.classList.toggle('active', isAnimating);
         }
 
+        // Сброс вида
         function resetView() {
             camera.position.set(0, 0, 5);
+            camera.lookAt(0, 0, 0);
         }
 
+        // Анимационный цикл
         function animate() {
             requestAnimationFrame(animate);
 
@@ -431,14 +608,20 @@
             renderer.render(scene, camera);
         }
 
+        // Обработка изменения размера окна
         window.addEventListener('resize', () => {
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        });
+            renderer.setSize(width, height);
+        }, false);
 
+        // Запуск
+        console.log('Инициализация Three.js сцены...');
         animate();
         showComponent('bluepill');
+        console.log('Готово!');
     </script>
 </body>
 </html>
